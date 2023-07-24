@@ -1,4 +1,5 @@
-ARG P4_BASEIMAGE=ubuntu:jammy
+ARG P4_UBUNTUVER="jammy"
+ARG P4_BASEIMAGE=ubuntu:${P4_UBUNTUVER}
 FROM $P4_BASEIMAGE
 
 ENV container docker
@@ -8,6 +9,12 @@ RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* 
 	&& localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
 ENV LANG en_US.utf8
+
+# P4_PUBLIC_REPO should not be overridden
+ARG P4_PUBLIC_REPO="deb http://package.perforce.com/apt/ubuntu jammy release"
+# P4REPO is designed to be overridden
+ARG P4REPO="deb http://package.perforce.com/apt/ubuntu jammy release"
+ARG PKGV
 
 RUN \
   apt-get update && \
@@ -22,6 +29,10 @@ RUN \
   apt-get autoremove -y && \
   apt-get clean -y && \
   apt-get install -y -f helix-p4d
+
+# Switch to the package repository we want to get Helix from, which could be a development build.
+RUN \
+  echo "${P4REPO}\n" > /etc/apt/sources.list.d/perforce.list
 
 #ARG GOSU_VERSION=1.11
 #ARG S6_OVERLAY_VERSION=1.22.1.0
