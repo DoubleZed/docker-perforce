@@ -11,8 +11,8 @@ ENV LANG en_US.utf8
 
 RUN \
   apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt dist-upgrade -y && \
-  DEBIAN_FRONTEND=noninteractive apt install -y wget curl unzip vim gnupg zip lsb-release iputils-ping && \
+  apt dist-upgrade -y && \
+  apt install -y wget curl unzip vim gnupg zip lsb-release iputils-ping && \
   wget -qO - https://package.perforce.com/perforce.pubkey | apt-key add - && \
   echo "${P4_PUBLIC_REPO}\n" > /etc/apt/sources.list.d/perforce.list
 
@@ -21,7 +21,7 @@ RUN \
   apt-get upgrade -y && \
   apt-get autoremove -y && \
   apt-get clean -y
-  DEBIAN_FRONTEND=noninteractive apt-get install -y -f helix-p4d
+  apt-get install -y -f helix-p4d
 
 #ARG GOSU_VERSION=1.11
 #ARG S6_OVERLAY_VERSION=1.22.1.0
