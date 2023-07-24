@@ -20,7 +20,7 @@ RUN \
   apt-get update && \
   apt-get upgrade -y && \
   apt-get autoremove -y && \
-  apt-get clean -y
+  apt-get clean -y && \
   apt-get install -y -f helix-p4d
 
 #ARG GOSU_VERSION=1.11
